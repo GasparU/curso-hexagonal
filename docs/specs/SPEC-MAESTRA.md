@@ -369,3 +369,6 @@ Cada caso de uso vive en **su propia carpeta**, con el nombre de la acción (`cr
 | 2026-10-15 10:31 | Fase 1 cerrada: esqueleto + contexto Vacantes (3 casos de uso, 32 tests) | Ver `FASE-1-vacantes.md` |
 | 2026-10-15 10:31 | Se agregaron 4 codigos de error (ID/ESTADO/SALDO invalidos + VACANTE_NO_PUBLICADA) | Los necesitaban el UUID, el estado, el saldo y cerrar-en-borrador |
 | 2026-10-15 10:31 | `existePorTitulo` queda declarado SIN uso | El spec lo lista como puerto pero no define la regla de titulo unico |
+| 2026-10-15 10:59 | Nucleo compartido `src/comun/` (errores, evento, reloj, ids, publicador, filtro) | §9.1 pide UN catalogo y UN filtro; §4 prohibe que los contextos se importen |
+| 2026-10-15 10:59 | Fase 2 cerrada: contexto Postulaciones + evento cross-contexto (dedup DNI) | Ver `FASE-2-postulaciones.md` |
+| 2026-10-15 10:59 | Puerto `ConsultaDeVacantes` para el cruce entre contextos | §9.3: postular a una vacante inexistente es 404, nunca 500 |

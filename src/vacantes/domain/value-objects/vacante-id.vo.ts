@@ -1,5 +1,5 @@
-import { errorDeDominio } from '../errors/error-codes';
-import { GeneradorDeId } from '../ports/generador-id.port';
+import { errorDeDominio } from '../../../comun/domain/errors/error-codes';
+import { GeneradorDeId } from '../../../comun/domain/ports/generador-id.port';
 
 const REGEX_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 

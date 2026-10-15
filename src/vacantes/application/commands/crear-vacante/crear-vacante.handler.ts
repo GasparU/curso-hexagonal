@@ -1,8 +1,8 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Vacante } from '../../../domain/entities/vacante.entity';
-import { GENERADOR_DE_ID, GeneradorDeId } from '../../../domain/ports/generador-id.port';
-import { RELOJ, Reloj } from '../../../domain/ports/reloj.port';
+import { GENERADOR_DE_ID, GeneradorDeId } from '../../../../comun/domain/ports/generador-id.port';
+import { RELOJ, Reloj } from '../../../../comun/domain/ports/reloj.port';
 import { VACANTE_REPOSITORIO, VacanteRepositorio } from '../../../domain/ports/vacante.repository';
 import { Descripcion } from '../../../domain/value-objects/descripcion.vo';
 import { PerfilCargo } from '../../../domain/value-objects/perfil-cargo.vo';

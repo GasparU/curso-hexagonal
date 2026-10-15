@@ -1,4 +1,4 @@
-import { errorDeDominio } from '../errors/error-codes';
+import { errorDeDominio } from '../../../comun/domain/errors/error-codes';
 
 export class SaldoCreditos {
   private constructor(private readonly cantidad: number) {}

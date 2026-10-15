@@ -5,6 +5,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { construirOpcionesBaseDeDatos } from './config/database.config';
 import { validarEntorno } from './config/env.validation';
+import { PostulacionesModule } from './postulaciones/infrastructure/postulaciones.module';
 import { VacantesModule } from './vacantes/infrastructure/vacantes.module';
 
 @Module({
@@ -17,6 +18,7 @@ import { VacantesModule } from './vacantes/infrastructure/vacantes.module';
     EventEmitterModule.forRoot(),
     CqrsModule.forRoot(),
     VacantesModule,
+    PostulacionesModule,
   ],
 })
 export class AppModule {}

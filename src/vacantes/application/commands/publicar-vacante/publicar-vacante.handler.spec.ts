@@ -1,7 +1,7 @@
 import { Vacante } from '../../../domain/entities/vacante.entity';
-import { EventoDeDominio } from '../../../domain/events/evento-de-dominio';
+import { EventoDeDominio } from '../../../../comun/domain/evento-de-dominio';
 import { VacantePublicada } from '../../../domain/events/vacante-publicada.event';
-import { PublicadorDeEventos } from '../../../domain/ports/publicador-eventos.port';
+import { PublicadorDeEventos } from '../../../../comun/domain/ports/publicador-eventos.port';
 import { Descripcion } from '../../../domain/value-objects/descripcion.vo';
 import { PerfilCargo } from '../../../domain/value-objects/perfil-cargo.vo';
 import { SaldoCreditos } from '../../../domain/value-objects/saldo-creditos.vo';

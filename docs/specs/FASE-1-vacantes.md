@@ -27,21 +27,22 @@ vacante/
 │       ├── domain/        (el cerebro — CERO imports de @nestjs/typeorm)
 │       │   ├── entities/       vacante.entity.ts
 │       │   ├── value-objects/  vacante-id · titulo · descripcion · perfil-cargo · estado-vacante · saldo-creditos
-│       │   ├── events/         evento-de-dominio · vacante-publicada · vacante-cerrada
-│       │   ├── errors/         domain.exception.ts · error-codes.ts
-│       │   └── ports/          vacante.repository · saldo-creditos.repository · publicador-eventos · reloj · generador-id
+│       │   ├── events/         vacante-publicada · vacante-cerrada
+│       │   └── ports/          vacante.repository · saldo-creditos.repository
 │       ├── application/   (CQRS)
 │       │   ├── commands/       crear-vacante/ · publicar-vacante/
 │       │   └── queries/        obtener-vacante/
 │       └── infrastructure/
 │           ├── controllers/    vacantes.controller.ts
 │           ├── dto/            crear-vacante.dto.ts
+│           ├── listeners/      vacante-postulacion.listener.ts   (agregado en Fase 2)
 │           ├── persistence/    orm/ · mappers/ · typeorm-*.repository.ts · en-memoria/
-│           ├── events/         nest-publicador-eventos.ts
-│           ├── services/       sistema-reloj.ts · uuid-generador-id.ts
-│           ├── filters/        domain-exception.filter.ts
 │           └── vacantes.module.ts
 ```
+
+> **Actualizado 2026-10-15 10:59 (Fase 2):** lo transversal (errores, `evento-de-dominio`,
+> reloj, generador de ids, publicador de eventos y el **filtro único**) se movió a `src/comun/`.
+> Ver [`FASE-2-postulaciones.md`](FASE-2-postulaciones.md) §1.a.
 
 **Adaptadores en memoria** (`persistence/en-memoria/`) = para los tests unitarios.
 **Adaptadores TypeORM** = los que se cablean en `VacantesModule`. Cambiar de uno a otro es **una línea**.

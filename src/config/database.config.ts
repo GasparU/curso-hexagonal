@@ -2,6 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { SaldoCreditosOrmEntity } from '../vacantes/infrastructure/persistence/orm/saldo-creditos.orm-entity';
 import { VacanteOrmEntity } from '../vacantes/infrastructure/persistence/orm/vacante.orm-entity';
+import { PostulacionOrmEntity } from '../postulaciones/infrastructure/persistence/orm/postulacion.orm-entity';
 
 /**
  * Opciones de conexión. Lee del ConfigService (que ya pasó por `validarEntorno`),
@@ -15,7 +16,7 @@ export function construirOpcionesBaseDeDatos(config: ConfigService): TypeOrmModu
     username: config.getOrThrow<string>('DB_USER'),
     password: config.getOrThrow<string>('DB_PASSWORD'),
     database: config.getOrThrow<string>('DB_NAME'),
-    entities: [VacanteOrmEntity, SaldoCreditosOrmEntity],
+    entities: [VacanteOrmEntity, SaldoCreditosOrmEntity, PostulacionOrmEntity],
     synchronize: false, // el esquema sale de migraciones versionadas, nunca de sync automático
   };
 }

@@ -1,12 +1,12 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { errorDeDominio } from '../../../domain/errors/error-codes';
+import { errorDeDominio } from '../../../../comun/domain/errors/error-codes';
 import { VacantePublicada } from '../../../domain/events/vacante-publicada.event';
 import {
   PUBLICADOR_DE_EVENTOS,
   PublicadorDeEventos,
-} from '../../../domain/ports/publicador-eventos.port';
-import { RELOJ, Reloj } from '../../../domain/ports/reloj.port';
+} from '../../../../comun/domain/ports/publicador-eventos.port';
+import { RELOJ, Reloj } from '../../../../comun/domain/ports/reloj.port';
 import {
   SALDO_CREDITOS_REPOSITORIO,
   SaldoCreditosRepositorio,

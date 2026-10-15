@@ -43,3 +43,14 @@ pnpm start:dev              # arranca la API (default http://localhost:3000)
 
 - [`docs/specs/SPEC-MAESTRA.md`](docs/specs/SPEC-MAESTRA.md) — el mapa completo del proyecto.
 - [`docs/specs/FASE-1-vacantes.md`](docs/specs/FASE-1-vacantes.md) — lo entregado en la Fase 1.
+- [`docs/specs/FASE-2-postulaciones.md`](docs/specs/FASE-2-postulaciones.md) — lo entregado en la Fase 2.
+
+## Endpoints
+
+| Método | Ruta | Qué hace |
+|---|---|---|
+| POST | `/vacantes` | Crear una vacante |
+| POST | `/vacantes/:id/publicar` | Publicar (consume 1 crédito) |
+| GET | `/vacantes/:id` | Ver una vacante |
+| POST | `/vacantes/:id/postulaciones` | Postularse (dedup por DNI) |
+| GET | `/vacantes/:id/postulaciones` | Listar postulaciones de la vacante |

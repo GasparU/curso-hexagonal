@@ -1,4 +1,4 @@
-import { errorDeDominio } from '../errors/error-codes';
+import { errorDeDominio } from '../../../comun/domain/errors/error-codes';
 import { Descripcion } from '../value-objects/descripcion.vo';
 import { EstadoVacante } from '../value-objects/estado-vacante.vo';
 import { PerfilCargo } from '../value-objects/perfil-cargo.vo';

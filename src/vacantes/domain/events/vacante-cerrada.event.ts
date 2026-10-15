@@ -1,4 +1,4 @@
-import { EventoDeDominio } from './evento-de-dominio';
+import { EventoDeDominio } from '../../../comun/domain/evento-de-dominio';
 
 export class VacanteCerrada implements EventoDeDominio {
   constructor(

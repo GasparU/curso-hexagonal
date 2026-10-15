@@ -1,5 +1,5 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { FiltroExcepcionesDominio } from './vacantes/infrastructure/filters/domain-exception.filter';
+import { FiltroExcepcionesDominio } from './comun/infrastructure/filters/domain-exception.filter';
 
 /**
  * Configuración común de la app. Vive acá para que el e2e arranque con EXACTAMENTE

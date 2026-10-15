@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { errorDeDominio } from '../../../domain/errors/error-codes';
+import { errorDeDominio } from '../../../../comun/domain/errors/error-codes';
 import { VACANTE_REPOSITORIO, VacanteRepositorio } from '../../../domain/ports/vacante.repository';
 import { VacanteId } from '../../../domain/value-objects/vacante-id.vo';
 import { ObtenerVacanteQuery } from './obtener-vacante.query';

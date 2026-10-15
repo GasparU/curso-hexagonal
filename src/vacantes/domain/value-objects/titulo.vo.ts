@@ -1,4 +1,4 @@
-import { errorDeDominio } from '../errors/error-codes';
+import { errorDeDominio } from '../../../comun/domain/errors/error-codes';
 
 const MINIMO = 5;
 const MAXIMO = 120;

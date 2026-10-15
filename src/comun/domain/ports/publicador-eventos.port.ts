@@ -1,4 +1,4 @@
-import { EventoDeDominio } from '../events/evento-de-dominio';
+import { EventoDeDominio } from '../evento-de-dominio';
 
 export interface PublicadorDeEventos {
   publicar(eventos: EventoDeDominio[]): Promise<void>;

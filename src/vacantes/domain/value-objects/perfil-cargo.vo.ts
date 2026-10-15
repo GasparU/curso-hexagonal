@@ -1,4 +1,4 @@
-import { errorDeDominio } from '../errors/error-codes';
+import { errorDeDominio } from '../../../comun/domain/errors/error-codes';
 
 export const PERFILES_CARGO = ['PROFESIONAL', 'OPERARIO'] as const;
 export type PerfilCargoValor = (typeof PERFILES_CARGO)[number];

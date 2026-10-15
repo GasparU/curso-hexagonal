@@ -1,4 +1,4 @@
-import { errorDeDominio } from '../errors/error-codes';
+import { errorDeDominio } from '../../../comun/domain/errors/error-codes';
 
 export const ESTADOS_VACANTE = ['BORRADOR', 'PUBLICADA', 'CERRADA'] as const;
 export type EstadoVacanteValor = (typeof ESTADOS_VACANTE)[number];
