@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: vacante-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vacante
+      POSTGRES_PASSWORD: vacante
+      POSTGRES_DB: vacante
+    ports:
+      - '5433:5432'
+    volumes:
+      - vacante_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U vacante -d vacante']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  vacante_pgdata:

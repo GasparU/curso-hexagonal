@@ -1,0 +1,9 @@
+node_modules/
+dist/
+coverage/
+*.log
+
+# Variables de entorno: NUNCA se versionan (solo el .env.example)
+.env
+.env.*
+!.env.example
