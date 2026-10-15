@@ -1,7 +1,7 @@
 # FASE 3 — Migraciones + e2e + Docs + Autoevaluación
 
 > Detalle ejecutable de la Fase 3 del [SPEC-MAESTRA](SPEC-MAESTRA.md).
-> **Creado:** 2026-10-15 11:02 · **Actualizado:** 2026-10-15 11:19 (Lima) · **Estado:** ✅ CERRADA + revisada contra la rúbrica real (ver §9) · **Dueño:** José Gaspar
+> **Creado:** 2026-10-15 11:02 · **Actualizado:** 2026-10-15 11:20 (Lima) · **Estado:** ✅ CERRADA + revisada contra la rúbrica real (ver §9) · **Dueño:** José Gaspar
 
 ---
 
@@ -56,6 +56,7 @@ inexistente). Depende de **puertos**, no de repositorios; el módulo lo arma con
 | Build | `pnpm build` | **OK** |
 | Tests unitarios | `pnpm test` | **19 suites / 83 tests PASS** |
 | Migraciones | `pnpm migration:run` | **✅ aplicadas** → 4 tablas (`migrations`, `vacantes`, `saldos_creditos`, `postulaciones`) |
+| Reversibilidad | `pnpm migration:revert` × 2 → `migration:run` | **✅ 4 → 3 → 1 → 4 tablas**; el e2e pasa **11/11** después de la ida y vuelta |
 | e2e | `pnpm test:e2e` | **✅ 11 tests PASS** contra Postgres real |
 | Mutaciones | (ver §6) | **9 ROJAS** |
 
@@ -84,7 +85,7 @@ Docker Desktop y se corrió por esa vía.
 | 4 | **CQRS (10)** | 5 llamadas a `busDeComandos/Consultas.execute` en los controladores; comandos escriben, queries leen (`VacanteVista`, `PostulacionVista`) | ✅ |
 | 5 | **Errores (10)** | `DomainException` con `code`+`kind`; **un único** `FiltroExcepcionesDominio`; catálogo == `docs/reglas-negocio.md` | ✅ |
 | 6 | **Pruebas (10)** | Unit: **19 suites / 83 tests PASS**. e2e: **11/11 PASS** contra Postgres real. El catálogo de errores **entero** tiene prueba (15 códigos) con un candado que falla si se agrega uno sin probar | ✅ |
-| 7 | **Persistencia (8)** | `synchronize: false` en app y CLI; **2 migraciones con `up`/`down`** aplicadas en vivo; `UNIQUE`/`FK`/`CHECK` creados en la base | ✅ |
+| 7 | **Persistencia (8)** | `synchronize: false` en app y CLI; **2 migraciones con `up`/`down`** aplicadas en vivo y **probadas en reversa** (4 → 3 → 1 → 4 tablas); `UNIQUE`/`FK`/`CHECK` creados en la base | ✅ |
 | 8 | **Contextos y eventos (7)** | 2 contextos; las **entidades REGISTRAN** sus eventos (`tomarEventos()`) y el caso de uso los publica **después** de persistir; listener en `vacantes/infrastructure/listeners/`; test de la cadena completa | ✅ |
 | 9 | **Config y seguridad (5)** | `src/config/env.validation.ts` valida al arrancar (sin defaults peligrosos); `.env.example`; `.env` **gitignoreado**; sin secretos | ✅ |
 | 10 | **Documentación (5)** | `README.md` + `docs/reglas-negocio.md` (ids `RN-001`… enlazados a `archivo:línea`) + **`docs/decisiones-arquitectura.md`** (14 ADR con el porqué y la alternativa descartada) + 4 specs de fase | ✅ |
@@ -183,6 +184,12 @@ Se releyó la rúbrica del curso (`rubrica-proyecto-final.pdf`) porque el `SPEC-
 
 **Verificación de que H4 no es un espejo:** el candado se probó rompiéndolo — se agregó
 un código inventado al catálogo y el test **se puso rojo** (mutación #8).
+
+### La reversibilidad de las migraciones, medida
+
+La rúbrica pide *"migraciones limpias y **reversibles** (up y down)"*. No alcanza con que
+el método `down` exista: se corrió. `revert` × 2 bajó el esquema a **3 y luego a 1 tabla**,
+`migration:run` lo volvió a levantar a **4**, y el e2e siguió en **11/11**.
 
 ### Lo que la rúbrica deja afuera (y no hay que perseguir)
 
