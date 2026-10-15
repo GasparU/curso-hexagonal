@@ -1,7 +1,7 @@
 # FASE 3 — Migraciones + e2e + Docs + Autoevaluación
 
 > Detalle ejecutable de la Fase 3 del [SPEC-MAESTRA](SPEC-MAESTRA.md).
-> **Creado:** 2026-10-15 11:02 (Lima) · **Estado:** ⚠️ código y docs HECHOS; **e2e escrito pero NO ejecutado** (falta base) · **Dueño:** José Gaspar
+> **Creado:** 2026-10-15 11:02 · **Actualizado:** 2026-10-15 11:06 (Lima) · **Estado:** ✅ CERRADA (todos los gates en verde) · **Dueño:** José Gaspar
 
 ---
 
@@ -29,7 +29,8 @@ completa y la autoevaluación contra la rúbrica.
 
 12 casos: crear, publicar (descuenta crédito), doble publicación (409), sin créditos (409),
 postular, **contador cross-contexto = 1**, dedup por DNI (409), listar, 2× 404, 400 por
-título corto, 400 por campo de más, 400 por DNI inválido.
+título corto, 400 por campo de más, 400 por DNI inválido. **(11 tests ejecutados: dos aserciones
+400 van dentro del mismo test.)**
 La app se arranca con `configurarApp()` — **la misma función que usa `main.ts`**.
 
 ### 1.c Documentación
@@ -39,28 +40,29 @@ La app se arranca con `configurarApp()` — **la misma función que usa `main.ts
 
 ---
 
-## 2. Gates (evidencia REAL, 2026-10-15 11:02 Lima)
+## 2. Gates (evidencia REAL, 2026-10-15 11:06 Lima)
 
 | Gate | Comando | Resultado |
 |---|---|---|
 | Typecheck | `npx tsc --noEmit` | **0 errores** |
 | Build | `pnpm build` | **OK** |
 | Tests unitarios | `pnpm test` | **17 suites / 56 tests PASS** |
-| Migraciones | `pnpm migration:run` | ⚠️ **NO ejecutado** (no hay base levantada) |
-| e2e | `pnpm test:e2e` | ⚠️ **NO ejecutado** (requiere base + migraciones) |
+| Migraciones | `pnpm migration:run` | **✅ aplicadas** → 4 tablas (`migrations`, `vacantes`, `saldos_creditos`, `postulaciones`) |
+| e2e | `pnpm test:e2e` | **✅ 11 tests PASS** contra Postgres real |
 | Mutaciones | (ver §6) | **4 ROJAS** en Fases 1 y 2 |
 
-### Por qué el e2e no se ejecutó (límite declarado, no oculto)
-
-Docker Desktop estaba **apagado** y el PostgreSQL local (16.1, puerto 5432) **pide una
-contraseña que el agente no tiene**. El e2e está escrito y compila (`tsc` 0), pero **su
-verde no está probado**. Para correrlo:
+### Cómo se corrió (reproducible)
 
 ```bash
-docker compose up -d
-pnpm migration:run
-pnpm test:e2e
+docker compose up -d      # Postgres 16 en localhost:5433 (esperar a 'healthy')
+cp .env.example .env      # credenciales del compose
+pnpm migration:run        # crea las 4 tablas
+pnpm test:e2e             # 11/11 en verde
 ```
+
+**Nota de proceso:** el primer intento no se pudo ejecutar (Docker Desktop apagado y el
+PostgreSQL local del puerto 5432 pedía una contraseña que no se tenía). Se levantó
+Docker Desktop y se corrió por esa vía.
 
 ---
 
@@ -73,14 +75,14 @@ pnpm test:e2e
 | 3 | **Puertos y adaptadores (15)** | 10 puertos (`Symbol`); **3 repos en memoria + 3 TypeORM + 3 mappers**; cambiar adaptador = 1 línea en el módulo | ✅ |
 | 4 | **CQRS (10)** | 5 llamadas a `busDeComandos/Consultas.execute` en los controladores; comandos escriben, queries leen (`VacanteVista`, `PostulacionVista`) | ✅ |
 | 5 | **Errores (10)** | `DomainException` con `code`+`kind`; **un único** `FiltroExcepcionesDominio`; catálogo == `docs/reglas-negocio.md` | ✅ |
-| 6 | **Pruebas (10)** | Unit: **17 suites / 56 tests PASS**. e2e: escrito y compila, **NO ejecutado** | ⚠️ parcial |
-| 7 | **Persistencia (8)** | `synchronize: false` en app y CLI; **2 migraciones con `up`/`down`**; `UNIQUE`/`FK`/`CHECK` en la base | ✅ (sin ejecutar) |
+| 6 | **Pruebas (10)** | Unit: **17 suites / 56 tests PASS**. e2e: **11/11 PASS** contra Postgres real | ✅ |
+| 7 | **Persistencia (8)** | `synchronize: false` en app y CLI; **2 migraciones con `up`/`down`** aplicadas en vivo; `UNIQUE`/`FK`/`CHECK` creados en la base | ✅ |
 | 8 | **Contextos y eventos (7)** | 2 contextos; `PostulacionEnviada` publicado **después** de persistir; listener en `vacantes/infrastructure/listeners/`; test de la cadena completa | ✅ |
 | 9 | **Config y seguridad (5)** | `src/config/env.validation.ts` valida al arrancar (sin defaults peligrosos); `.env.example`; `.env` **gitignoreado**; sin secretos | ✅ |
 | 10 | **Documentación (5)** | `README.md` + `docs/reglas-negocio.md` + 4 specs de fase; alguien ajeno levanta el proyecto leyendo solo el README | ✅ |
 
-**Lo que falta para el 100%:** correr `pnpm migration:run` + `pnpm test:e2e` en verde
-(criterios 6 y 7 dependen de eso).
+**Lo que falta para el 100%:** nada pendiente de ejecución. Los 10 criterios tienen evidencia
+y su gate en verde.
 
 ---
 
@@ -129,11 +131,14 @@ pnpm test:e2e
 - [x] `docs/reglas-negocio.md` con el catálogo completo
 - [x] README autosuficiente
 - [x] Autoevaluación con evidencia por criterio
-- [ ] **e2e ejecutado en verde** ← pendiente (falta base)
+- [x] **e2e ejecutado en verde** (11/11 contra Postgres real)
+- [x] **Migraciones aplicadas** en vivo (4 tablas)
 
 ---
 
 ## 8. Cierre del proyecto
 
-Con esto las **3 fases están escritas**. El único pendiente para darlo por terminado es
-**correr migraciones + e2e** contra una base real (Docker o Postgres local).
+Las **3 fases están terminadas y verificadas**. El proyecto queda **entregable**:
+`tsc` 0 · `nest build` OK · **17 suites / 56 tests unitarios** · **11 tests e2e** contra
+Postgres real · migraciones aplicadas · 4 mutaciones ROJAS. De los 10 criterios de la
+rúbrica, los 10 tienen evidencia.
