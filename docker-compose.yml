@@ -5,10 +5,13 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: vacante
-      POSTGRES_PASSWORD: vacante
       POSTGRES_DB: vacante
+      # Base LOCAL de desarrollo: no lleva contraseña. El puerto se publica solo en 127.0.0.1,
+      # así que el contenedor no es alcanzable desde la red, y adentro solo hay datos de prueba
+      # que las migraciones vuelven a crear.
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
-      - '5433:5432'
+      - '127.0.0.1:5433:5432'
     volumes:
       - vacante_pgdata:/var/lib/postgresql/data
     healthcheck:

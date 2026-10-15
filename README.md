@@ -57,8 +57,10 @@ cp .env.example .env
 En Windows (PowerShell): `Copy-Item .env.example .env`
 
 El `.env.example` **ya trae los valores que coinciden con `docker-compose.yml`**
-(usuario, clave y base `vacante`), así que no hay que tocar nada si vas a usar la
-base de Docker. Si apuntás a tu propio PostgreSQL, ahí sí ajustá `DB_*`.
+(usuario y base `vacante`), así que no hay que tocar nada si vas a usar la base de
+Docker: esa base **no pide contraseña** (se crea sin ella y solo escucha en tu máquina).
+Si apuntás a tu propio PostgreSQL, ahí sí ajustá `DB_*` y poné tu clave en
+`DB_PASSWORD`.
 
 ### 3. Levantar la base
 
@@ -97,7 +99,8 @@ con sembrarla una vez:
 docker exec -i vacante-postgres psql -U vacante -d vacante -c "INSERT INTO saldos_creditos (id, disponible) VALUES ('00000000-0000-4000-8000-000000000001', 10) ON CONFLICT (id) DO UPDATE SET disponible = 10;"
 ```
 
-(usuario, base y clave salen de tu `.env`). Este paso es **solo para la demo**: la app
+(usuario y base salen de tu `.env`; contra la base local la clave no se usa). Este
+paso es **solo para la demo**: la app
 arranca igual sin la fila; lo que pasa es que publicar devuelve
 `409 CREDITOS_INSUFICIENTES`.
 

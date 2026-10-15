@@ -271,3 +271,27 @@ esquema por defecto de Nest y mezcla lectura y escritura en el mismo lugar.
 
 **Costo:** más archivos por caso de uso (comando, handler, vista). A cambio, cada
 caso de uso se lee solo.
+
+## ADR-015 — Ninguna credencial versionada; la base local no usa contraseña
+
+**Decisión:** `docker-compose.yml` crea el PostgreSQL local con
+`POSTGRES_HOST_AUTH_METHOD=trust` (sin contraseña) y publica el puerto **solo en
+`127.0.0.1`**. El `.env.example` documenta que `DB_PASSWORD` tiene que existir (la app
+la valida al arrancar), pero contra la base local no se usa.
+
+**Por qué:** la contraseña del contenedor de desarrollo **no protege nada** — la caja
+vive en la máquina de quien corre el proyecto, se crea al vuelo y adentro solo hay
+datos de prueba. Pero estaba escrita en archivos versionados, y eso tiene dos
+consecuencias reales: (1) cualquier escáner de secretos la marca, y (2) el repo
+afirmaba "sin secretos commiteados" mientras mostraba uno. Un documento que miente es
+un bug.
+
+**Alternativa descartada:** `${DB_PASSWORD:?...}` en el compose (que también saca la
+clave del repo) **obliga a completar el `.env` ANTES de levantar la base**: quien copia
+el `.env.example` y corre `docker compose up` se come un error. Con `trust` la base
+levanta sin configurar nada, y `DB_PASSWORD` queda libre para un entorno real.
+
+**Costo:** `trust` significa que **cualquiera que logre alcanzar el puerto** entra sin
+contraseña. Por eso el mapeo es `127.0.0.1:5433:5432`: el contenedor no escucha en la
+red, solo en la máquina. En producción no se usa este archivo: la clave va en el `.env`
+(que **no** se versiona) o en el gestor de secretos del proveedor.
