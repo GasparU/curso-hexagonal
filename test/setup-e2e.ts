@@ -6,7 +6,8 @@
 process.env.DB_HOST ??= 'localhost';
 process.env.DB_PORT ??= '5433';
 process.env.DB_USER ??= 'vacante';
-process.env.DB_PASSWORD ??= 'vacante';
+// DB_PASSWORD a propósito NO se define acá: sale del .env, igual que para la app. Si el setup
+// pusiera un valor propio, ganaría por venir primero y taparía la clave de tu base.
 process.env.DB_NAME ??= 'vacante';
 process.env.PORT ??= '3000';
 process.env.NODE_ENV ??= 'test';
