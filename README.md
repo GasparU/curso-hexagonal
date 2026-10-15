@@ -23,7 +23,7 @@ src/
 ```
 
 - `domain/` **no conoce nada de afuera**: sin `@nestjs/*`, sin `typeorm`, sin `class-validator`.
-  Entidades, value objects, puertos, eventos y errores.
+  Entidades, value objects, puertos, eventos, errores y servicios de dominio.
 - `application/` son los casos de uso (comandos y queries) sobre los buses de CQRS.
 - `infrastructure/` implementa los puertos (TypeORM + en memoria) y expone los controladores.
 
@@ -85,7 +85,8 @@ Los errores de negocio devuelven `{ statusCode, code, message }` (ver
 ## Documentación
 
 - [`docs/specs/SPEC-MAESTRA.md`](docs/specs/SPEC-MAESTRA.md) — el mapa completo del proyecto.
-- [`docs/reglas-negocio.md`](docs/reglas-negocio.md) — reglas de negocio + catálogo de errores.
+- [`docs/reglas-negocio.md`](docs/reglas-negocio.md) — las 18 reglas (`RN-001`…) con su estado, enlazadas al código + catálogo de errores.
+- [`docs/decisiones-arquitectura.md`](docs/decisiones-arquitectura.md) — 14 ADR: por qué el proyecto está armado así.
 - [`docs/specs/FASE-1-vacantes.md`](docs/specs/FASE-1-vacantes.md) — Fase 1.
 - [`docs/specs/FASE-2-postulaciones.md`](docs/specs/FASE-2-postulaciones.md) — Fase 2.
 - [`docs/specs/FASE-3-cierre.md`](docs/specs/FASE-3-cierre.md) — Fase 3 + autoevaluación.

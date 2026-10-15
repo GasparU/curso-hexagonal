@@ -1,4 +1,7 @@
 import { errorDeDominio } from '../../../comun/domain/errors/error-codes';
+import { EventoDeDominio } from '../../../comun/domain/evento-de-dominio';
+import { VacanteCerrada } from '../events/vacante-cerrada.event';
+import { VacantePublicada } from '../events/vacante-publicada.event';
 import { Descripcion } from '../value-objects/descripcion.vo';
 import { EstadoVacante } from '../value-objects/estado-vacante.vo';
 import { PerfilCargo } from '../value-objects/perfil-cargo.vo';
@@ -7,10 +10,31 @@ import { Titulo } from '../value-objects/titulo.vo';
 import { VacanteId } from '../value-objects/vacante-id.vo';
 
 /**
+ * Forma PLANA de la vacante. Es la frontera del agregado: hacia afuera (y hacia
+ * la base) la vacante sale como primitivos, nunca como objetos del dominio.
+ */
+export interface VacantePrimitivas {
+  id: string;
+  titulo: string;
+  descripcion: string;
+  perfil: string;
+  estado: string;
+  creadaEn: Date;
+  publicadaEn: Date | null;
+  cerradaEn: Date | null;
+  postulacionesRecibidas: number;
+}
+
+/**
  * Raíz del agregado Vacante. No tiene setters: se cambia de estado con métodos
  * que representan reglas de negocio (`publicar`, `cerrar`).
+ *
+ * Además REGISTRA sus propios eventos de dominio: la entidad sabe que pasó algo
+ * relevante; el caso de uso solo los publica DESPUÉS de guardar (§8).
  */
 export class Vacante {
+  private readonly _eventos: EventoDeDominio[] = [];
+
   private constructor(
     readonly id: VacanteId,
     readonly titulo: Titulo,
@@ -44,29 +68,37 @@ export class Vacante {
     );
   }
 
-  /** Rehidrata desde la base. No re-aplica invariantes de creación (los datos ya son válidos). */
-  static reconstruir(
-    id: VacanteId,
-    titulo: Titulo,
-    descripcion: Descripcion,
-    perfil: PerfilCargo,
-    creadaEn: Date,
-    estado: EstadoVacante,
-    publicadaEn: Date | null,
-    cerradaEn: Date | null,
-    postulacionesRecibidas: number,
-  ): Vacante {
+  /**
+   * Rehidrata desde primitivos (lo que devuelve la base). VUELVE A VALIDAR:
+   * los value objects se construyen acá, así que un dato corrupto no entra.
+   */
+  static fromPrimitives(primitivas: VacantePrimitivas): Vacante {
     return new Vacante(
-      id,
-      titulo,
-      descripcion,
-      perfil,
-      creadaEn,
-      estado,
-      publicadaEn,
-      cerradaEn,
-      postulacionesRecibidas,
+      VacanteId.desde(primitivas.id),
+      Titulo.crear(primitivas.titulo),
+      Descripcion.crear(primitivas.descripcion),
+      PerfilCargo.crear(primitivas.perfil),
+      primitivas.creadaEn,
+      EstadoVacante.crear(primitivas.estado),
+      primitivas.publicadaEn,
+      primitivas.cerradaEn,
+      primitivas.postulacionesRecibidas,
     );
+  }
+
+  /** Todo lo que la vacante deja ver afuera: primitivos, sin objetos del dominio. */
+  toPrimitives(): VacantePrimitivas {
+    return {
+      id: this.id.valor,
+      titulo: this.titulo.valor,
+      descripcion: this.descripcion.valor,
+      perfil: this.perfil.valor,
+      estado: this._estado.valor,
+      creadaEn: this.creadaEn,
+      publicadaEn: this._publicadaEn,
+      cerradaEn: this._cerradaEn,
+      postulacionesRecibidas: this._postulacionesRecibidas,
+    };
   }
 
   /**
@@ -84,6 +116,7 @@ export class Vacante {
     const saldoRestante = saldo.descontar();
     this._estado = EstadoVacante.publicada();
     this._publicadaEn = ahora;
+    this._eventos.push(new VacantePublicada(this.id.valor, ahora));
     return saldoRestante;
   }
 
@@ -100,8 +133,17 @@ export class Vacante {
     if (!this._estado.esPublicada()) {
       throw errorDeDominio('VACANTE_NO_PUBLICADA');
     }
+
     this._estado = EstadoVacante.cerrada();
     this._cerradaEn = ahora;
+    this._eventos.push(new VacanteCerrada(this.id.valor, ahora));
+  }
+
+  /** Entrega los eventos registrados y los limpia: se publican una sola vez. */
+  tomarEventos(): EventoDeDominio[] {
+    const eventos = [...this._eventos];
+    this._eventos.length = 0;
+    return eventos;
   }
 
   get estado(): EstadoVacante {

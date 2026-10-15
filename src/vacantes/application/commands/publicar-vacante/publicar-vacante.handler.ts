@@ -1,7 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { errorDeDominio } from '../../../../comun/domain/errors/error-codes';
-import { VacantePublicada } from '../../../domain/events/vacante-publicada.event';
 import {
   PUBLICADOR_DE_EVENTOS,
   PublicadorDeEventos,
@@ -46,6 +45,7 @@ export class PublicarVacanteHandler implements ICommandHandler<PublicarVacanteCo
     await this.vacantes.guardar(vacante);
     await this.saldos.guardar(saldoRestante);
 
-    await this.publicador.publicar([new VacantePublicada(vacante.id.valor, ahora)]);
+    // la entidad registró sus eventos; recién AHORA (ya persistido) se publican
+    await this.publicador.publicar(vacante.tomarEventos());
   }
 }

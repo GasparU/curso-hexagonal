@@ -4,6 +4,7 @@ import { PostularCommand } from '../../../postulaciones/application/commands/pos
 import { PostularHandler } from '../../../postulaciones/application/commands/postular/postular.handler';
 import { ConsultaDeVacantesAdapter } from '../../../postulaciones/infrastructure/adapters/consulta-de-vacantes.adapter';
 import { PostulacionRepositorioEnMemoria } from '../../../postulaciones/infrastructure/persistence/en-memoria/postulacion.repository.en-memoria';
+import { RegistroDePostulaciones } from '../../../postulaciones/domain/services/registro-de-postulaciones';
 import { Vacante } from '../../domain/entities/vacante.entity';
 import { Descripcion } from '../../domain/value-objects/descripcion.vo';
 import { PerfilCargo } from '../../domain/value-objects/perfil-cargo.vo';
@@ -41,9 +42,10 @@ describe('Cross-contexto: PostulacionEnviada -> Vacante.registrarPostulacion', (
     const listener = new VacantePostulacionListener(vacantes);
     emisor.on('PostulacionEnviada', (evento) => listener.alRecibirPostulacion(evento));
 
+    const consulta = new ConsultaDeVacantesAdapter(vacantes);
     const handler = new PostularHandler(
       postulaciones,
-      new ConsultaDeVacantesAdapter(vacantes),
+      new RegistroDePostulaciones(postulaciones, consulta),
       { generar: () => POSTULACION_ID },
       { ahora: () => AHORA },
       new NestPublicadorDeEventos(emisor),

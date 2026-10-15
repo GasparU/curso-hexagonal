@@ -2,6 +2,7 @@ import { EventoDeDominio } from '../../../../comun/domain/evento-de-dominio';
 import { PublicadorDeEventos } from '../../../../comun/domain/ports/publicador-eventos.port';
 import { PostulacionEnviada } from '../../../domain/events/postulacion-enviada.event';
 import { ConsultaDeVacantes } from '../../../domain/ports/consulta-de-vacantes.port';
+import { RegistroDePostulaciones } from '../../../domain/services/registro-de-postulaciones';
 import { VacanteId } from '../../../domain/value-objects/vacante-id.vo';
 import { PostulacionRepositorioEnMemoria } from '../../../infrastructure/persistence/en-memoria/postulacion.repository.en-memoria';
 import { PostularCommand } from './postular.command';
@@ -34,9 +35,10 @@ class PublicadorEspia implements PublicadorDeEventos {
 function armar(vacanteExiste: boolean) {
   const postulaciones = new PostulacionRepositorioEnMemoria();
   const publicador = new PublicadorEspia(postulaciones);
+  const consulta = new ConsultaDeVacantesFalsa(vacanteExiste ? [VACANTE_ID] : []);
   const handler = new PostularHandler(
     postulaciones,
-    new ConsultaDeVacantesFalsa(vacanteExiste ? [VACANTE_ID] : []),
+    new RegistroDePostulaciones(postulaciones, consulta),
     { generar: () => POSTULACION_ID },
     { ahora: () => AHORA },
     publicador,

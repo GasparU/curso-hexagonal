@@ -1,4 +1,6 @@
 import { Vacante } from './vacante.entity';
+import { VacanteCerrada } from '../events/vacante-cerrada.event';
+import { VacantePublicada } from '../events/vacante-publicada.event';
 import { Descripcion } from '../value-objects/descripcion.vo';
 import { EstadoVacante } from '../value-objects/estado-vacante.vo';
 import { PerfilCargo } from '../value-objects/perfil-cargo.vo';
@@ -89,20 +91,69 @@ describe('Vacante', () => {
     );
   });
 
-  it('reconstruir rehidrata el estado que viene de la base', () => {
-    const vacante = Vacante.reconstruir(
-      VacanteId.desde(ID),
-      Titulo.crear('Analista de datos'),
-      Descripcion.crear('Buscamos un analista con experiencia en SQL.'),
-      PerfilCargo.profesional(),
-      AHORA,
-      EstadoVacante.publicada(),
-      new Date('2026-01-02T00:00:00Z'),
-      null,
-      7,
-    );
+  it('fromPrimitives rehidrata el estado que viene de la base y vuelve a validar', () => {
+    const vacante = Vacante.fromPrimitives({
+      id: ID,
+      titulo: 'Analista de datos',
+      descripcion: 'Buscamos un analista con experiencia en SQL.',
+      perfil: 'PROFESIONAL',
+      estado: 'PUBLICADA',
+      creadaEn: AHORA,
+      publicadaEn: new Date('2026-01-02T00:00:00Z'),
+      cerradaEn: null,
+      postulacionesRecibidas: 7,
+    });
 
     expect(vacante.estado.valor).toBe('PUBLICADA');
     expect(vacante.postulacionesRecibidas).toBe(7);
+  });
+
+  it('fromPrimitives RECHAZA un primitivo inválido (no se cuela un estado inventado)', () => {
+    expect(() =>
+      Vacante.fromPrimitives({
+id: ID,
+titulo: 'Analista de datos',
+descripcion: 'Buscamos un analista con experiencia en SQL.',
+perfil: 'PROFESIONAL',
+estado: 'PAUSADA',
+creadaEn: AHORA,
+publicadaEn: null,
+cerradaEn: null,
+postulacionesRecibidas: 0,
+      }),
+    ).toThrow('El estado indicado no es válido.');
+  });
+
+  it('toPrimitives() y fromPrimitives() van y vuelven sin perder nada', () => {
+    const vacante = nuevaVacante();
+    vacante.publicar(SaldoCreditos.crear(3), AHORA);
+    vacante.registrarPostulacion();
+
+    const vuelta = Vacante.fromPrimitives(vacante.toPrimitives());
+
+    expect(vuelta.toPrimitives()).toEqual(vacante.toPrimitives());
+  });
+
+  it('la entidad REGISTRA el evento al publicar y tomarEventos lo entrega una sola vez', () => {
+    const vacante = nuevaVacante();
+    vacante.publicar(SaldoCreditos.crear(3), AHORA);
+
+    const eventos = vacante.tomarEventos();
+
+    expect(eventos).toHaveLength(1);
+    expect(eventos[0]).toBeInstanceOf(VacantePublicada);
+    expect(vacante.tomarEventos()).toHaveLength(0); // ya se entregaron
+  });
+
+  it('la entidad registra el evento al cerrar', () => {
+    const vacante = nuevaVacante();
+    vacante.publicar(SaldoCreditos.crear(3), AHORA);
+    vacante.tomarEventos(); // consumo el de publicar
+
+    vacante.cerrar(AHORA);
+
+    const eventos = vacante.tomarEventos();
+    expect(eventos).toHaveLength(1);
+    expect(eventos[0]).toBeInstanceOf(VacanteCerrada);
   });
 });
