@@ -10,8 +10,8 @@ import { Titulo } from '../value-objects/titulo.vo';
 import { VacanteId } from '../value-objects/vacante-id.vo';
 
 /**
- * Forma PLANA de la vacante. Es la frontera del agregado: hacia afuera (y hacia
- * la base) la vacante sale como primitivos, nunca como objetos del dominio.
+ * Forma plana de la vacante: es lo que entra y sale de la base, y lo que la
+ * entidad deja ver hacia afuera.
  */
 export interface VacantePrimitivas {
   id: string;
@@ -29,8 +29,8 @@ export interface VacantePrimitivas {
  * Raíz del agregado Vacante. No tiene setters: se cambia de estado con métodos
  * que representan reglas de negocio (`publicar`, `cerrar`).
  *
- * Además REGISTRA sus propios eventos de dominio: la entidad sabe que pasó algo
- * relevante; el caso de uso solo los publica DESPUÉS de guardar (§8).
+ * Además guarda sus propios eventos: la entidad sabe cuándo pasó algo relevante
+ * y el caso de uso los publica una vez que la guardó.
  */
 export class Vacante {
   private readonly _eventos: EventoDeDominio[] = [];
@@ -69,8 +69,8 @@ export class Vacante {
   }
 
   /**
-   * Rehidrata desde primitivos (lo que devuelve la base). VUELVE A VALIDAR:
-   * los value objects se construyen acá, así que un dato corrupto no entra.
+   * Rehidrata desde primitivos. Vuelve a validar: los value objects se arman
+   * acá, así que un dato corrupto no llega a entrar.
    */
   static fromPrimitives(primitivas: VacantePrimitivas): Vacante {
     return new Vacante(
@@ -86,7 +86,7 @@ export class Vacante {
     );
   }
 
-  /** Todo lo que la vacante deja ver afuera: primitivos, sin objetos del dominio. */
+  /** Devuelve la vacante como primitivos. */
   toPrimitives(): VacantePrimitivas {
     return {
       id: this.id.valor,
@@ -102,8 +102,8 @@ export class Vacante {
   }
 
   /**
-   * Publicar CONSUME un crédito: la regla vive acá, no en el caso de uso.
-   * Devuelve el saldo restante para que el handler lo persista.
+   * Publicar consume un crédito: la regla vive acá, no en el caso de uso.
+   * Devuelve el saldo restante para que el handler lo guarde.
    */
   publicar(saldo: SaldoCreditos, ahora: Date): SaldoCreditos {
     if (this._estado.esCerrada()) {
@@ -139,7 +139,7 @@ export class Vacante {
     this._eventos.push(new VacanteCerrada(this.id.valor, ahora));
   }
 
-  /** Entrega los eventos registrados y los limpia: se publican una sola vez. */
+  /** Devuelve los eventos pendientes y los limpia. */
   tomarEventos(): EventoDeDominio[] {
     const eventos = [...this._eventos];
     this._eventos.length = 0;

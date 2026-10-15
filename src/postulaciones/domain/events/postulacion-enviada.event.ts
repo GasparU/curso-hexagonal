@@ -1,8 +1,8 @@
 import { EventoDeDominio } from '../../../comun/domain/evento-de-dominio';
 
 /**
- * Se emite DESPUÉS de persistir la postulación. Lo escucha el contexto Vacantes
- * (su listener está en `vacantes/infrastructure/listeners/`).
+ * Se publica una vez guardada la postulación. Lo escucha el contexto Vacantes,
+ * desde `vacantes/infrastructure/listeners/`.
  */
 export class PostulacionEnviada implements EventoDeDominio {
   constructor(

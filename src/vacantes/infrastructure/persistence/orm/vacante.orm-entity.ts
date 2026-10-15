@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-/** Entidad del ORM. Es OTRA cosa que la entidad del dominio (no se mezclan). */
+/** Entidad del ORM. Es distinta de la entidad del dominio. */
 @Entity({ name: 'vacantes' })
 export class VacanteOrmEntity {
   @PrimaryColumn('uuid', { name: 'id' })

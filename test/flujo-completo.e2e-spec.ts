@@ -7,8 +7,8 @@ import { configurarApp } from '../src/app.setup';
 import { ID_SALDO_UNICO } from '../src/vacantes/infrastructure/persistence/typeorm-saldo-creditos.repository';
 
 /**
- * e2e contra Postgres REAL. Arranca la app con la MISMA función de configuración
- * que `main.ts` (`configurarApp`), así lo que se prueba es la app de verdad.
+ * e2e contra Postgres real. Arranca la app con la misma función de configuración
+ * que `main.ts` (`configurarApp`), así se prueba la app de verdad.
  *
  * Requiere: base levantada + migraciones aplicadas (`pnpm migration:run`).
  */
@@ -37,7 +37,7 @@ describe('Flujo completo (e2e)', () => {
   });
 
   beforeEach(async () => {
-    // base limpia + saldo conocido en cada test (los tests no se pisan entre sí)
+    // base limpia y saldo conocido antes de cada test
     await dataSource.query('DELETE FROM postulaciones');
     await dataSource.query('DELETE FROM vacantes');
     await dataSource.query('DELETE FROM saldos_creditos');
@@ -114,7 +114,7 @@ describe('Flujo completo (e2e)', () => {
 
     expect(respuesta.status).toBe(201);
 
-    // el contador vive en OTRO contexto: si subió, el evento cruzó de verdad
+    // el contador vive en el otro contexto: si subió, el evento cruzó de verdad
     const vacante = await servidor().get(`/vacantes/${id}`);
     expect(vacante.body.postulacionesRecibidas).toBe(1);
   });

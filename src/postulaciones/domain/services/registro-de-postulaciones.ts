@@ -5,12 +5,12 @@ import { DocumentoIdentidad } from '../value-objects/documento-identidad.vo';
 import { VacanteId } from '../value-objects/vacante-id.vo';
 
 /**
- * Servicio de DOMINIO: reglas que NO pertenecen a una sola Postulacion sino al
- * conjunto de postulaciones — no hay dos del mismo DNI en la misma vacante, y
- * solo se puede postular a una vacante que existe.
+ * Servicio de dominio: reglas que no son de una postulación sola sino del
+ * conjunto — no hay dos del mismo DNI en la misma vacante, y no se puede
+ * postular a una vacante que no existe.
  *
- * Por eso no vive en el caso de uso: el handler solo orquesta (persistir y
- * publicar). Depende de los PUERTOS del dominio, no de los repositorios concretos.
+ * Van acá y no en el caso de uso porque el handler solo debería orquestar.
+ * Depende de los puertos, no de los repositorios concretos.
  */
 export class RegistroDePostulaciones {
   constructor(

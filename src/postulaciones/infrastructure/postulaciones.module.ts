@@ -16,9 +16,8 @@ import { PostulacionOrmEntity } from './persistence/orm/postulacion.orm-entity';
 import { TypeOrmPostulacionRepositorio } from './persistence/typeorm-postulacion.repository';
 
 /**
- * Contexto Postulaciones. Depende de `ComunModule` (transversales) y de
- * `VacantesModule` SOLO para implementar su puerto de consulta cruzada:
- * nunca importa el dominio de Vacantes.
+ * Contexto Postulaciones. Depende de `ComunModule` para lo transversal y de
+ * `VacantesModule` solo para resolver su puerto de consulta cruzada.
  */
 @Module({
   imports: [TypeOrmModule.forFeature([PostulacionOrmEntity]), ComunModule, VacantesModule],
@@ -28,8 +27,7 @@ import { TypeOrmPostulacionRepositorio } from './persistence/typeorm-postulacion
     ListarPostulacionesDeVacanteHandler,
         { provide: POSTULACION_REPOSITORIO, useClass: TypeOrmPostulacionRepositorio },
         { provide: CONSULTA_DE_VACANTES, useClass: ConsultaDeVacantesAdapter },
-        // el servicio de dominio se arma con los PUERTOS: el módulo decide qué
-        // implementación concreta recibe (acá, los adaptadores de arriba)
+        // el servicio de dominio se arma con los puertos que se registran arriba
         {
           provide: REGISTRO_DE_POSTULACIONES,
           useFactory: (postulaciones: PostulacionRepositorio, vacantes: ConsultaDeVacantes) =>

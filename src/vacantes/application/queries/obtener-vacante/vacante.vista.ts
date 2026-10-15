@@ -1,4 +1,4 @@
-/** Modelo de lectura: un objeto plano, sin comportamiento. Las queries no devuelven entidades. */
+/** Modelo de lectura: un objeto plano, sin comportamiento. */
 export interface VacanteVista {
   id: string;
   titulo: string;

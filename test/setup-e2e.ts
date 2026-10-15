@@ -1,7 +1,7 @@
 /**
- * Valores por defecto para el e2e. Se respetan las variables que ya estén en el
- * entorno (así podés apuntar a tu propia base sin tocar este archivo).
- * Se carga con `setupFiles` en test/jest-e2e.json, ANTES de importar AppModule.
+ * Valores por defecto para el e2e. Si una variable ya está en el entorno, se
+ * respeta (así podés apuntar a tu propia base sin tocar este archivo).
+ * Se carga con `setupFiles` antes de importar AppModule.
  */
 process.env.DB_HOST ??= 'localhost';
 process.env.DB_PORT ??= '5433';

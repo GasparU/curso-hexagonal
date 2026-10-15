@@ -5,9 +5,8 @@ import { VACANTE_REPOSITORIO, VacanteRepositorio } from '../../domain/ports/vaca
 import { VacanteId } from '../../domain/value-objects/vacante-id.vo';
 
 /**
- * Oyente del evento que viene de OTRO contexto. Vive en la infraestructura de
- * Vacantes (no en su dominio) porque cruza la frontera entre contextos.
- * Cuando llega una postulación, suma el contador de la vacante.
+ * Escucha el evento que llega del otro contexto y suma el contador de la vacante.
+ * Vive en infraestructura porque cruza la frontera entre contextos.
  */
 @Injectable()
 export class VacantePostulacionListener {

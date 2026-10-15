@@ -4,8 +4,8 @@ import { Titulo } from '../../../domain/value-objects/titulo.vo';
 import { VacanteId } from '../../../domain/value-objects/vacante-id.vo';
 
 /**
- * Adaptador EN MEMORIA para los tests unitarios: sin Nest y sin base.
- * Es el que permite instanciar los handlers "a mano".
+ * Adaptador en memoria para los tests unitarios: sin Nest y sin base.
+ * Es el que permite instanciar los handlers a mano.
  */
 export class VacanteRepositorioEnMemoria implements VacanteRepositorio {
   private readonly porId = new Map<string, Vacante>();

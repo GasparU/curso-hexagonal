@@ -2,7 +2,7 @@ import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/commo
 import { Response } from 'express';
 import { DomainException, ErrorKind } from '../../domain/errors/domain.exception';
 
-/** ÚNICO lugar que traduce el `kind` del dominio a un código HTTP (para TODOS los contextos). */
+/** Único lugar que traduce el `kind` del dominio a un código HTTP. */
 const ESTADO_POR_KIND: Record<ErrorKind, number> = {
   VALIDATION: HttpStatus.BAD_REQUEST,
   NOT_FOUND: HttpStatus.NOT_FOUND,

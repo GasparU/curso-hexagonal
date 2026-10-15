@@ -1,8 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 /**
- * Tablas del contexto VACANTES. El esquema SIEMPRE sale de migraciones
- * (`synchronize: false`), nunca de un sync automático.
+ * Tablas del contexto Vacantes. El esquema sale de migraciones (`synchronize: false`).
  */
 export class CrearVacantes1750000000000 implements MigrationInterface {
   name = 'CrearVacantes1750000000000';

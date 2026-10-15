@@ -1,8 +1,8 @@
 /**
- * Todo evento de dominio lleva cuándo ocurrió. Los eventos son clases planas,
- * con el nombre en PASADO (ya pasó algo).
+ * Todo evento de dominio lleva cuándo ocurrió. Son clases planas y con el nombre
+ * en pasado, porque describen algo que ya pasó.
  *
- * Vive en `comun/` porque el publicador de eventos es transversal a los contextos.
+ * Está en `comun/` porque lo usan los dos contextos.
  */
 export interface EventoDeDominio {
   readonly ocurridaEn: Date;

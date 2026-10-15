@@ -26,9 +26,8 @@ import { VacanteId } from '../../../domain/value-objects/vacante-id.vo';
 import { PostularCommand } from './postular.command';
 
 /**
- * Orquesta nada más: le pide al dominio que valide las reglas (el registro de
- * postulaciones), persiste y DESPUÉS publica los eventos que registró la entidad
- * (`PostulacionEnviada` habla de algo que ya pasó).
+ * Orquesta: deja que el dominio valide las reglas, persiste y recién ahí publica
+ * los eventos que registró la entidad.
  */
 @CommandHandler(PostularCommand)
 export class PostularHandler implements ICommandHandler<PostularCommand, string> {

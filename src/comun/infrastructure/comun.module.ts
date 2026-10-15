@@ -7,8 +7,8 @@ import { SistemaReloj } from './sistema-reloj';
 import { UuidGeneradorDeId } from './uuid-generador-id';
 
 /**
- * Núcleo compartido: los adaptadores transversales que usan TODOS los contextos
- * (reloj, generador de ids, publicador de eventos). Se cablean una sola vez acá.
+ * Núcleo compartido: el reloj, el generador de ids y el publicador de eventos.
+ * Se cablean una sola vez y los usan los dos contextos.
  */
 @Module({
   providers: [

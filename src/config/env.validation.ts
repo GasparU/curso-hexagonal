@@ -1,6 +1,7 @@
 /**
  * Único lugar del proyecto que lee `process.env`.
- * Si falta una variable obligatoria, la app NO arranca (nada de defaults silenciosos).
+ * Si falta una variable obligatoria, la app no arranca: preferimos que falle al
+ * levantar antes que arrancar apuntando a otro lado.
  */
 export interface VariablesEntorno {
   DB_HOST: string;

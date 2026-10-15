@@ -10,7 +10,7 @@ import { Titulo } from '../../../domain/value-objects/titulo.vo';
 import { VacanteId } from '../../../domain/value-objects/vacante-id.vo';
 import { CrearVacanteCommand } from './crear-vacante.command';
 
-/** Orquesta: arma el dominio, lo persiste y devuelve el id. No tiene reglas de negocio. */
+/** Orquesta: arma el dominio, lo persiste y devuelve el id. */
 @CommandHandler(CrearVacanteCommand)
 export class CrearVacanteHandler implements ICommandHandler<CrearVacanteCommand, string> {
   constructor(

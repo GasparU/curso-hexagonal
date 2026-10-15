@@ -1,11 +1,11 @@
 export type ErrorKind = 'VALIDATION' | 'NOT_FOUND' | 'CONFLICT';
 
 /**
- * Error de negocio. El dominio NO conoce códigos HTTP: solo declara su `kind`.
- * Un único filtro de infraestructura traduce `kind` -> HTTP.
+ * Error de negocio. El dominio no conoce códigos HTTP: solo declara su `kind`
+ * y un único filtro de infraestructura lo traduce.
  *
- * Vive en `comun/` porque es un contrato COMPARTIDO por todos los contextos:
- * si cada contexto tuviera su propia clase, el filtro único no las atraparía.
+ * Está en `comun/` porque lo lanzan los dos contextos: si cada uno tuviera su
+ * propia clase, el filtro tendría que conocerlas todas.
  */
 export class DomainException extends Error {
   constructor(

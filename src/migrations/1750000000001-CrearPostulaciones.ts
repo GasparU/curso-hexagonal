@@ -1,8 +1,8 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 /**
- * Tabla del contexto POSTULACIONES. Acá viven las DOS reglas que solo la base
- * puede garantizar: el dedup por DNI (UNIQUE) y la integridad de la vacante (FK).
+ * Tabla del contexto Postulaciones. Las dos reglas que solo la base puede
+ * garantizar: el dedup por DNI (UNIQUE) y la integridad de la vacante (FK).
  */
 export class CrearPostulaciones1750000000001 implements MigrationInterface {
   name = 'CrearPostulaciones1750000000001';

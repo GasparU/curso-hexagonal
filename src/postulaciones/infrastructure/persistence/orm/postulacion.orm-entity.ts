@@ -1,8 +1,8 @@
 import { Column, Entity, Index, PrimaryColumn, Unique } from 'typeorm';
 
 /**
- * Entidad del ORM. La UNIQUE `(vacante_id, documento_identidad)` es la misma que
- * crea la migración: así el dedup por DNI también lo garantiza la base, no solo el código.
+ * Entidad del ORM. El UNIQUE de `(vacante_id, documento_identidad)` es el mismo
+ * que crea la migración: el dedup por DNI también lo cuida la base.
  */
 @Entity({ name: 'postulaciones' })
 @Unique('uq_postulacion_vacante_documento', ['vacanteId', 'documentoIdentidad'])

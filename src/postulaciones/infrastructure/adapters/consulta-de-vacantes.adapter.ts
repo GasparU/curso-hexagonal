@@ -8,9 +8,9 @@ import { ConsultaDeVacantes } from '../../domain/ports/consulta-de-vacantes.port
 import { VacanteId } from '../../domain/value-objects/vacante-id.vo';
 
 /**
- * Adaptador que contesta el puerto `ConsultaDeVacantes` usando el repositorio de
- * Vacantes. Es el ÚNICO punto donde se cruzan los dos contextos: acá, en
- * infraestructura, con un puerto de por medio (§4).
+ * Contesta el puerto `ConsultaDeVacantes` con el repositorio de Vacantes.
+ * Es el único punto donde se tocan los dos contextos, y siempre con un puerto
+ * de por medio.
  */
 @Injectable()
 export class ConsultaDeVacantesAdapter implements ConsultaDeVacantes {

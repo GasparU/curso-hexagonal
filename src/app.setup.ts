@@ -2,8 +2,8 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { FiltroExcepcionesDominio } from './comun/infrastructure/filters/domain-exception.filter';
 
 /**
- * Configuración común de la app. Vive acá para que el e2e arranque con EXACTAMENTE
- * la misma pipa y el mismo filtro que `main.ts` (si no, el e2e prueba otra app).
+ * Configuración común de la app: la usan `main.ts` y el e2e, así los dos
+ * arrancan con la misma validación y el mismo filtro de errores.
  */
 export function configurarApp(app: INestApplication): void {
   app.useGlobalPipes(

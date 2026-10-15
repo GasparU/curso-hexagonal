@@ -16,7 +16,7 @@ import { PublicarVacanteCommand } from './publicar-vacante.command';
 
 /**
  * Orquesta: carga la vacante y el saldo, delega la regla en el dominio, persiste
- * y RECIÉN DESPUÉS publica el evento (el evento habla de algo que ya pasó).
+ * y recién entonces publica el evento.
  */
 @CommandHandler(PublicarVacanteCommand)
 export class PublicarVacanteHandler implements ICommandHandler<PublicarVacanteCommand, void> {
@@ -35,7 +35,7 @@ export class PublicarVacanteHandler implements ICommandHandler<PublicarVacanteCo
 
     const saldo = await this.saldos.obtener();
     if (!saldo) {
-      // Sin saldo registrado no se puede publicar: fallamos en cerrado.
+      // si no hay fila de saldo, se asume cero
       throw errorDeDominio('CREDITOS_INSUFICIENTES');
     }
 
@@ -45,7 +45,7 @@ export class PublicarVacanteHandler implements ICommandHandler<PublicarVacanteCo
     await this.vacantes.guardar(vacante);
     await this.saldos.guardar(saldoRestante);
 
-    // la entidad registró sus eventos; recién AHORA (ya persistido) se publican
+    // recién después de guardar
     await this.publicador.publicar(vacante.tomarEventos());
   }
 }

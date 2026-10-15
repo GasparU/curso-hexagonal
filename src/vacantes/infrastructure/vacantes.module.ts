@@ -14,10 +14,10 @@ import { TypeOrmSaldoCreditosRepositorio } from './persistence/typeorm-saldo-cre
 import { TypeOrmVacanteRepositorio } from './persistence/typeorm-vacante.repository';
 
 /**
- * Acá se decide QUÉ adaptador implementa cada puerto propio de Vacantes.
+ * Acá se decide qué adaptador implementa cada puerto de Vacantes.
  * Los transversales (reloj, ids, eventos) los provee `ComunModule`.
- * `VACANTE_REPOSITORIO` se exporta porque Postulaciones lo necesita para
- * verificar que la vacante exista (sin importar el dominio de Vacantes).
+ * `VACANTE_REPOSITORIO` se exporta porque Postulaciones lo usa para verificar
+ * que la vacante exista.
  */
 @Module({
   imports: [TypeOrmModule.forFeature([VacanteOrmEntity, SaldoCreditosOrmEntity]), ComunModule],

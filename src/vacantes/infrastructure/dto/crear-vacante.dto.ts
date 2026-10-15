@@ -1,6 +1,6 @@
 import { IsIn, IsString, MaxLength, MinLength } from 'class-validator';
 
-/** Validación de BORDE (nivel 1). El dominio vuelve a validar con sus value objects (nivel 2). */
+/** Validación del borde. El dominio vuelve a validar con sus value objects. */
 export class CrearVacanteDto {
   @IsString()
   @MinLength(5)

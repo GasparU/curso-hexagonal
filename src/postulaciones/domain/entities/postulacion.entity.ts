@@ -7,7 +7,7 @@ import { NombreCompleto } from '../value-objects/nombre-completo.vo';
 import { PostulacionId } from '../value-objects/postulacion-id.vo';
 import { VacanteId } from '../value-objects/vacante-id.vo';
 
-/** Forma PLANA de la postulación: la frontera del agregado hacia la base. */
+/** Forma plana de la postulación: lo que entra y sale de la base. */
 export interface PostulacionPrimitivas {
   id: string;
   vacanteId: string;
@@ -19,11 +19,10 @@ export interface PostulacionPrimitivas {
 }
 
 /**
- * Raíz del agregado Postulacion. Inmutable: no hay setters ni cambios de estado
- * todavía (el workflow de estados queda para después del curso).
+ * Raíz del agregado Postulacion. Inmutable: todavía no tiene cambios de estado.
  *
- * Registra su propio evento: al nacer sabe que hay que avisar que se postuló a
- * una vacante. El caso de uso lo publica DESPUÉS de persistir (§8).
+ * Guarda su propio evento para que el caso de uso lo publique una vez que la
+ * haya guardado.
  */
 export class Postulacion {
   private readonly _eventos: EventoDeDominio[] = [];
@@ -38,7 +37,7 @@ export class Postulacion {
     readonly creadaEn: Date,
   ) {}
 
-  /** Nace en RECIBIDA y registra el evento para que el otro contexto se entere. */
+  /** Nace en RECIBIDA y deja su evento listo para publicar. */
   static registrar(
     id: PostulacionId,
     vacanteId: VacanteId,
@@ -64,8 +63,8 @@ export class Postulacion {
   }
 
   /**
-   * Rehidrata desde primitivos (lo que devuelve la base). VUELVE A VALIDAR:
-   * los value objects se construyen acá, así que un dato corrupto no entra.
+   * Rehidrata desde primitivos. Vuelve a validar: los value objects se arman
+   * acá, así que un dato corrupto no llega a entrar.
    */
   static fromPrimitives(primitivas: PostulacionPrimitivas): Postulacion {
     return new Postulacion(
@@ -79,7 +78,7 @@ export class Postulacion {
     );
   }
 
-  /** Todo lo que la postulación deja ver afuera: primitivos. */
+  /** Devuelve la postulación como primitivos. */
   toPrimitives(): PostulacionPrimitivas {
     return {
       id: this.id.valor,
@@ -92,7 +91,7 @@ export class Postulacion {
     };
   }
 
-  /** Entrega los eventos registrados y los limpia: se publican una sola vez. */
+  /** Devuelve los eventos pendientes y los limpia. */
   tomarEventos(): EventoDeDominio[] {
     const eventos = [...this._eventos];
     this._eventos.length = 0;

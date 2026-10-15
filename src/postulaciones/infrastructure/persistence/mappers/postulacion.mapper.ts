@@ -2,8 +2,8 @@ import { Postulacion } from '../../../domain/entities/postulacion.entity';
 import { PostulacionOrmEntity } from '../orm/postulacion.orm-entity';
 
 /**
- * Traduce datos entre la fila del ORM y la entidad del dominio, EN LOS DOS
- * SENTIDOS, usando primitivos (`toPrimitives` / `fromPrimitives`).
+ * Traduce entre la fila del ORM y la entidad del dominio, en los dos sentidos,
+ * pasando por primitivos.
  */
 export class PostulacionMapper {
   static aDominio(fila: PostulacionOrmEntity): Postulacion {

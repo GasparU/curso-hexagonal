@@ -7,8 +7,7 @@ import { VacanteVista } from '../../application/queries/obtener-vacante/vacante.
 import { CrearVacanteDto } from '../dto/crear-vacante.dto';
 
 /**
- * El controlador NO llama handlers ni repositorios: publica en los buses.
- * Es la primera regla de CQRS que revisa la rúbrica.
+ * El controlador no llama handlers ni repositorios: publica en los buses.
  */
 @Controller('vacantes')
 export class VacantesController {

@@ -3,8 +3,8 @@ import { Titulo } from '../value-objects/titulo.vo';
 import { VacanteId } from '../value-objects/vacante-id.vo';
 
 /**
- * Puerto de salida. El dominio declara QUÉ necesita; la infraestructura decide CÓMO.
- * Si no encuentra algo devuelve `null`, nunca lanza excepción.
+ * Puerto de salida. El dominio dice qué necesita; la infraestructura resuelve cómo.
+ * Si no encuentra algo devuelve `null`, no lanza excepción.
  */
 export interface VacanteRepositorio {
   guardar(vacante: Vacante): Promise<void>;

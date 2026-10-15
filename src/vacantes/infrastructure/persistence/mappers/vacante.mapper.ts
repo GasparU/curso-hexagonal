@@ -2,9 +2,8 @@ import { Vacante } from '../../../domain/entities/vacante.entity';
 import { VacanteOrmEntity } from '../orm/vacante.orm-entity';
 
 /**
- * Traduce datos entre la fila del ORM y la entidad del dominio, EN LOS DOS
- * SENTIDOS, usando primitivos (`toPrimitives` / `fromPrimitives`).
- * No repite reglas del caso de uso.
+ * Traduce entre la fila del ORM y la entidad del dominio, en los dos sentidos,
+ * pasando por primitivos. No repite reglas del caso de uso.
  */
 export class VacanteMapper {
   static aDominio(fila: VacanteOrmEntity): Vacante {

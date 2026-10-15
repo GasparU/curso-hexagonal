@@ -6,8 +6,8 @@ import { VacanteOrmEntity } from '../vacantes/infrastructure/persistence/orm/vac
 
 /**
  * Fuente de datos para el CLI de migraciones (`pnpm migration:run` / `migration:revert`).
- * Usa la MISMA configuración de conexión que la app: si la app y el CLI no apuntaran
- * al mismo lugar, las migraciones irían a una base y la app leería otra.
+ * Usa la misma configuración de conexión que la app, para que las migraciones no
+ * vayan a parar a otra base.
  */
 export default new DataSource({
   type: 'postgres',

@@ -6,8 +6,8 @@ export interface DefinicionError {
 }
 
 /**
- * Catálogo ÚNICO de errores de negocio (todos los contextos).
- * El `code` es un contrato estable con el cliente y no se cambia a la ligera.
+ * Catálogo de errores de negocio, compartido por los dos contextos.
+ * El `code` es el contrato con el cliente: no se cambia a la ligera.
  */
 export const ERRORES = {
   ID_INVALIDO: { kind: 'VALIDATION', mensaje: 'El identificador no tiene un formato válido.' },

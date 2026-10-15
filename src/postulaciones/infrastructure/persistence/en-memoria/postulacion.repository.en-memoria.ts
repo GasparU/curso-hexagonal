@@ -4,7 +4,7 @@ import { DocumentoIdentidad } from '../../../domain/value-objects/documento-iden
 import { PostulacionId } from '../../../domain/value-objects/postulacion-id.vo';
 import { VacanteId } from '../../../domain/value-objects/vacante-id.vo';
 
-/** Adaptador EN MEMORIA para los tests unitarios (sin Nest y sin base). */
+/** Adaptador en memoria para los tests unitarios: sin Nest y sin base. */
 export class PostulacionRepositorioEnMemoria implements PostulacionRepositorio {
   private readonly porId = new Map<string, Postulacion>();
 
