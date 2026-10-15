@@ -372,3 +372,5 @@ Cada caso de uso vive en **su propia carpeta**, con el nombre de la acción (`cr
 | 2026-10-15 10:59 | Nucleo compartido `src/comun/` (errores, evento, reloj, ids, publicador, filtro) | §9.1 pide UN catalogo y UN filtro; §4 prohibe que los contextos se importen |
 | 2026-10-15 10:59 | Fase 2 cerrada: contexto Postulaciones + evento cross-contexto (dedup DNI) | Ver `FASE-2-postulaciones.md` |
 | 2026-10-15 10:59 | Puerto `ConsultaDeVacantes` para el cruce entre contextos | §9.3: postular a una vacante inexistente es 404, nunca 500 |
+| 2026-10-15 11:02 | Fase 3: migraciones (up/down) + e2e + reglas de negocio + README + autoevaluacion | Ver `FASE-3-cierre.md`. El e2e quedo SIN ejecutar (no habia base levantada) |
+| 2026-10-15 11:02 | Migraciones en `src/migrations/` (top-level) | El esquema es compartido por los 2 contextos |
